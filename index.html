@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>onliDM: Your DMs. Nothing else.</title>
-<meta name="description" content="Your DMs on Instagram, Messenger, X and LinkedIn in one app, plus stories on Instagram and Messenger. No feed, no Reels, no Explore. Logins stay on your phone.">
+<meta name="description" content="Your Instagram DMs in one focused app, plus stories and profiles. No feed, no Reels, no Explore. Your login stays on your phone.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="onliDM">
 <meta property="og:title" content="onliDM: Your DMs. Nothing else.">
-<meta property="og:description" content="Your DMs on Instagram, Messenger, X and LinkedIn in one app, plus stories on Instagram and Messenger. No feed, no Reels, no Explore. Logins stay on your phone.">
+<meta property="og:description" content="Your Instagram DMs in one focused app, plus stories and profiles. No feed, no Reels, no Explore. Your login stays on your phone.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="onliDM: Your DMs. Nothing else.">
-<meta name="twitter:description" content="Your DMs on Instagram, Messenger, X and LinkedIn in one app, plus stories on Instagram and Messenger. No feed, no Reels, no Explore. Logins stay on your phone.">
+<meta name="twitter:description" content="Your Instagram DMs in one focused app, plus stories and profiles. No feed, no Reels, no Explore. Your login stays on your phone.">
 <meta name="theme-color" content="#f5f5f7">
 <link rel="icon" href="favicon.svg">
 <style>
@@ -156,12 +156,11 @@ main>.band{padding-block:4rem 2rem}
   .band-links{align-items:flex-end}
 }
 
-/* ===== Network tiles ===== */
+/* ===== Tab tiles ===== */
 .tiles{display:flex;gap:clamp(0.75rem, 4vw, 3rem)}
 .tiles li{display:flex;flex-direction:column;align-items:center;gap:.75rem;min-width:0;font-size:.875rem;font-weight:600} /* min-width:0 keeps the row inside 320px */
 .tile{width:clamp(3.5rem, 14vw, 5.5rem);aspect-ratio:1;border-radius:1.25rem;background:var(--card);box-shadow:var(--shadow-card);display:grid;place-items:center}
 .tile svg{width:45%}
-.at{font-size:clamp(1.575rem, 6.3vw, 2.475rem);font-weight:500;line-height:1} /* 45% of the tile width */
 .tiles-note{margin-top:1.5rem}
 
 /* ===== Shelf: what stays, what goes ===== */
@@ -307,7 +306,7 @@ main>.statement{padding-block:5rem}
           </p>
         </div>
       </div>
-      <p class="lead band-lead rv words" data-delay="500" data-stagger="18">onliDM opens Instagram, Messenger, X and LinkedIn straight to your messages. Feed, Reels and Explore are blocked. Stories keep only the stories row.</p>
+      <p class="lead band-lead rv words" data-delay="500" data-stagger="18">onliDM opens Instagram straight to your messages. Feed, Reels and Explore are blocked. Stories keep only the stories row.</p>
       <div class="actions rv fu" style="--d:800ms">
         <p class="btn solid">Coming soon to the App&nbsp;Store</p>
         <p class="note">Free in v1 · iPhone only</p>
@@ -315,29 +314,29 @@ main>.statement{padding-block:5rem}
     </div>
   </section>
 
-  <!-- ===== Network tiles ===== -->
+  <!-- ===== Tab tiles ===== -->
   <section>
     <div class="wrap">
-      <h2 class="tt rv fu"><span>Pick your apps.</span> <span>Turn on the services you use.</span></h2>
+      <h2 class="tt rv fu"><span>What you get.</span> <span>Messages, Stories, Notifications and Profile.</span></h2>
       <ul class="tiles">
         <li class="rv fu">
-          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></span>
-          Instagram
+          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4 3.5V17H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg></span>
+          Messages
         </li>
         <li class="rv fu" style="--d:80ms">
-          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H9l-3 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M18 10h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v2.5L16.5 17H13"/></svg></span>
-          Messenger
+          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/></svg></span>
+          Stories
         </li>
         <li class="rv fu" style="--d:160ms">
-          <span class="tile"><span class="at" aria-hidden="true">@</span></span>
-          X
+          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20C12 20 4.5 15.4 2.8 10.7C1.7 7.6 3.6 4.5 6.9 4.5C8.9 4.5 10.5 5.6 12 7.5C13.5 5.6 15.1 4.5 17.1 4.5C20.4 4.5 22.3 7.6 21.2 10.7C19.5 15.4 12 20 12 20z"/></svg></span>
+          Notifications
         </li>
         <li class="rv fu" style="--d:240ms">
-          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="11" rx="2"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg></span>
-          LinkedIn
+          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></span>
+          Profile
         </li>
       </ul>
-      <p class="note tiles-note rv fd">Switch between them from the onliDM tab at the bottom right.</p>
+      <p class="note tiles-note rv fd">The onliDM tab holds the lock, your Profile username and sign out.</p>
     </div>
   </section>
 
@@ -374,7 +373,7 @@ main>.statement{padding-block:5rem}
         </li>
         <li class="card rv pl" style="--d:90ms">
           <p class="label">What stays</p>
-          <h3>Stories on Instagram and Messenger</h3>
+          <h3>Stories</h3>
           <div class="art mid">
             <ul class="stories" aria-hidden="true"><li><span>M</span></li><li><span>L</span></li><li><span>S</span></li><li><span>T</span></li></ul>
           </div>
@@ -409,7 +408,7 @@ main>.statement{padding-block:5rem}
     <div class="wrap">
       <div class="statement-in">
         <p class="eyebrow rv fd">The idea</p>
-        <p class="statement-text rv words" data-stagger="30">onliDM is a focused browser for the direct-message inbox you already use. Feed, Reels, Explore, and other endless-scroll surfaces are blocked by onliDM's own URL rules, and the Stories tab clips the home page down to its stories row, so what is left is your conversations, stories and profiles.</p>
+        <p class="statement-text rv words" data-stagger="30">onliDM is a focused browser for the Instagram inbox you already use. Feed, Reels, Explore, and other endless-scroll surfaces are blocked by onliDM's own URL rules, and the Stories tab clips the home page down to its stories row, so what is left is your conversations, stories and profiles.</p>
         <p class="closing">No accounts, no servers, nothing tracked.</p>
       </div>
     </div>
@@ -422,8 +421,8 @@ main>.statement{padding-block:5rem}
       <ul class="shelf how" tabindex="0" aria-label="How it works">
         <li class="card rv fu">
           <p class="idx">01</p>
-          <h3>Pick your apps</h3>
-          <p>Choose your services in the onliDM tab at the bottom right.</p>
+          <h3>Open onliDM</h3>
+          <p>It goes straight to your Instagram messages.</p>
         </li>
         <li class="card dark rv fu" style="--d:90ms">
           <p class="idx">02</p>
@@ -446,7 +445,7 @@ main>.statement{padding-block:5rem}
         <div class="lock-text">
           <p class="eyebrow rv fd">Screen Time lock</p>
           <h2 class="wide-h rv lines"><span class="ln"><span>Lock the real apps.</span></span></h2>
-          <p class="lead wide-body rv words" data-stagger="16">Shield Instagram and friends with Screen Time so only onliDM stays open. Each day gives you two 5-minute passes.</p>
+          <p class="lead wide-body rv words" data-stagger="16">Shield the Instagram app with Screen Time so only onliDM stays open. Each day gives you two 5-minute passes.</p>
           <a class="btn ghost" href="support.html">How the lock works <span class="arr" aria-hidden="true">→</span></a>
         </div>
         <!-- Phone B: the lock -->
@@ -461,7 +460,7 @@ main>.statement{padding-block:5rem}
             <p class="ph-pill">Unlock for 5 minutes</p>
             <p class="ph-cap">2 of 2 passes left today</p>
             <div class="ph-head"><span>Locked apps</span><span class="ph-acc">Change apps</span></div>
-            <ul class="ph-plain"><li>Instagram</li><li>X</li></ul>
+            <ul class="ph-plain"><li>Instagram</li></ul>
             <div class="ph-tabs"><span>Messages</span><span>Stories</span><span>Notifications</span><span>Profile</span><span class="on">onliDM</span></div>
           </div>
         </div>
@@ -480,15 +479,15 @@ main>.statement{padding-block:5rem}
         </details>
         <details>
           <summary><span>Is this official?</span><span class="plus" aria-hidden="true">+</span></summary>
-          <div class="ans"><p>No. onliDM is an independent app and is not affiliated with, endorsed by, or sponsored by Meta, X Corp or LinkedIn. It opens their own websites inside a focused viewer.</p></div>
+          <div class="ans"><p>No. onliDM is an independent app and is not affiliated with, endorsed by, or sponsored by Meta. It opens Instagram's own website inside a focused viewer.</p></div>
         </details>
         <details>
-          <summary><span>What if a service changes its site?</span><span class="plus" aria-hidden="true">+</span></summary>
-          <div class="ans"><p>onliDM blocks pages like the feed or Explore using URL rules. If a service changes its site, those rules may need an update before blocking works again.</p></div>
+          <summary><span>What if Instagram changes its site?</span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="ans"><p>onliDM blocks pages like the feed or Explore using URL rules. If Instagram changes its site, those rules may need an update before blocking works again.</p></div>
         </details>
         <details>
           <summary><span>How do I sign out?</span><span class="plus" aria-hidden="true">+</span></summary>
-          <div class="ans"><p>Open the onliDM tab at the bottom right and tap "Sign out of all apps." That clears every login in one step.</p></div>
+          <div class="ans"><p>Open the onliDM tab at the bottom right and tap "Sign out of Instagram." That clears your login in one step.</p></div>
         </details>
       </div>
     </div>
@@ -529,7 +528,7 @@ main>.statement{padding-block:5rem}
       </div>
     </div>
     <div class="giant" aria-hidden="true">onliDM</div>
-    <p class="legal">onliDM is not affiliated with, endorsed by, or sponsored by Meta, X Corp or LinkedIn. Instagram and Messenger are trademarks of Meta Platforms, Inc. X is a trademark of X Corp. LinkedIn is a trademark of LinkedIn Corporation.</p>
+    <p class="legal">onliDM is not affiliated with, endorsed by, or sponsored by Meta. Instagram is a trademark of Meta Platforms, Inc.</p>
   </div>
 </footer>
 
