@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>onliDM: Your DMs. Nothing else.</title>
 <meta name="description" content="Your DMs on Instagram, Messenger, X and LinkedIn in one app, plus stories on Instagram and Messenger. No feed, no Reels, no Explore. Logins stay on your phone.">
-<meta name="theme-color" content="#0A0A0C">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="onliDM">
 <meta property="og:title" content="onliDM: Your DMs. Nothing else.">
@@ -13,15 +12,274 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="onliDM: Your DMs. Nothing else.">
 <meta name="twitter:description" content="Your DMs on Instagram, Messenger, X and LinkedIn in one app, plus stories on Instagram and Messenger. No feed, no Reels, no Explore. Logins stay on your phone.">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#f5f5f7">
+<link rel="icon" href="favicon.svg">
+<style>
+/* ===== Tokens ===== */
+:root{
+  --canvas:#f5f5f7;
+  --card:#ffffff;
+  --surface-inverse:#191917;
+  --ink:#191917;
+  --ink-muted:rgba(25,25,23,.62);
+  --ink-faint:rgba(25,25,23,.3);
+  --on-inverse:#ffffff;
+  --on-inverse-muted:rgba(255,255,255,.62);
+  --on-inverse-faint:rgba(255,255,255,.3);
+  --line:rgba(25,25,23,.2);
+  --line-on-inverse:rgba(255,255,255,.2);
+  --nav-bg:rgba(245,245,247,.92);
+  --radius-card:1.5rem;
+  --shadow-card:0 2px 12px rgba(0,0,0,.06);
+  --serif: ui-serif, "New York", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --display: var(--serif);      /* headings; set to var(--sans) for a bolder look */
+  --display-weight: 400;        /* use 600 with var(--sans) */
+  /* phone illustration only: the app's own colors */
+  --app-bg:#0A0A0C; --app-surface:#141418; --app-text:#F5F5F7; --app-muted:#9A9AA3; --app-accent:#4F8CFF;
+  /* page layout and motion */
+  --gutter:1.5rem;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+/* comparison theme: nothing switches it on automatically */
+html[data-theme="dark"]{
+  --canvas:#0A0A0C; --card:#141418; --surface-inverse:#F5F5F7;
+  --ink:#F5F5F7; --ink-muted:rgba(245,245,247,.62); --ink-faint:rgba(245,245,247,.3);
+  --on-inverse:#0A0A0C; --on-inverse-muted:rgba(10,10,12,.62); --on-inverse-faint:rgba(10,10,12,.3);
+  --line:rgba(245,245,247,.2); --line-on-inverse:rgba(10,10,12,.2);
+  --nav-bg:rgba(10,10,12,.92); --shadow-card:none;
+}
+@media (min-width:1024px){:root{--gutter:3rem}}
+
+/* ===== Base and type ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0}
+body{background:var(--canvas);color:var(--ink);font-family:var(--sans);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
+  --muted:var(--ink-muted);--faint:var(--ink-faint)} /* surface colors, swapped by .dark */
+h1,h2,h3{font-family:var(--display);font-weight:var(--display-weight);letter-spacing:-0.01em;line-height:1.12}
+::selection{background:var(--ink);color:var(--canvas)}
+ul{list-style:none;padding:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+a:focus-visible,button:focus-visible,summary:focus-visible,.shelf:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+h1{font-size:clamp(2.5rem, 1.6rem + 5vw, 6rem);line-height:1.04}
+h3{font-size:1.75rem}
+.lead{font-size:1.125rem;line-height:1.625}
+.note{font-size:.875rem;color:var(--ink-muted)}
+.label{font-size:.75rem;text-transform:uppercase;letter-spacing:.18em;color:var(--muted)}
+.accent{font-family:var(--serif);font-style:italic}
+
+/* ===== Layout primitives ===== */
+.wrap{max-width:90rem;margin-inline:auto;padding-inline:var(--gutter)}
+main>section{padding-block:3.5rem}
+.tt{font-size:clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);line-height:1.15;margin-bottom:2rem}
+.tt span+span{color:var(--ink-muted)}
+.eyebrow{display:inline-flex;align-items:center;gap:.75rem;vertical-align:top;font-size:.75rem;text-transform:uppercase;letter-spacing:.2em;color:var(--muted)}
+.eyebrow::before{content:"";flex:none;width:2rem;height:1px;background:currentColor}
+.card{border-radius:var(--radius-card);background:var(--card);color:var(--ink);box-shadow:var(--shadow-card);overflow:hidden;padding:1.75rem;transition:scale .4s var(--ease)}
+.dark{background:var(--surface-inverse);color:var(--on-inverse);--muted:var(--on-inverse-muted);--faint:var(--on-inverse-faint)}
+.shelf{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);scroll-padding-inline:var(--gutter);padding-block:.5rem 1.5rem}
+.shelf::-webkit-scrollbar{display:none}
+.shelf>li{flex:0 0 clamp(17rem, 78vw, 25rem);scroll-snap-align:start;min-height:30rem;display:flex;flex-direction:column}
+.shelf-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:2rem}
+.shelf-head .tt{margin-bottom:0}
+.shelf-btns{display:none;gap:.75rem}
+.shelf-btns button{width:3rem;height:3rem;padding:0;border:0;border-radius:50%;background:var(--card);box-shadow:var(--shadow-card);font-size:1.5rem;line-height:1;cursor:pointer}
+.shelf-btns button:disabled{opacity:.35;cursor:default}
+.btn{display:inline-flex;align-items:center;gap:.75rem;padding:1rem 2rem;font-size:.875rem;text-transform:uppercase;letter-spacing:.14em;border-radius:999px;text-align:center}
+.solid{background:var(--ink);color:var(--canvas);cursor:default}
+.ghost{margin-top:2rem;border:1px dashed var(--line-on-inverse);color:var(--on-inverse);transition:background-color .4s var(--ease),color .4s var(--ease)}
+.arr{transition:transform .4s var(--ease)}
+@media (min-width:1024px){
+  main>section{padding-block:5rem}
+  .js .shelf-btns{display:flex}
+}
+
+/* ===== Phone illustration ===== */
+.phone{flex:none;width:min(100%,17rem);aspect-ratio:9/19.5;border-radius:2.5rem;background:var(--app-bg);color:var(--app-text);border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 60px -20px rgba(0,0,0,.35);padding:1rem .9rem;display:flex;flex-direction:column;font-family:var(--sans);line-height:1.35}
+.ph{flex:1;display:flex;flex-direction:column;gap:.75rem}
+.ph-status{display:flex;justify-content:space-between;align-items:center;padding-inline:.5rem;font-size:.75rem;color:var(--app-muted)}
+.dots{display:flex;gap:.2rem}
+.dots i{width:.25rem;height:.25rem;border-radius:50%;background:currentColor}
+.ph-title{font-size:1rem;font-weight:600}
+.ph-center{text-align:center}
+.ph-list li{display:flex;align-items:center;gap:.6rem;padding-block:.55rem}
+.ph-list li+li{border-top:1px solid rgba(245,245,247,.08)}
+.av{flex:none;width:2.25rem;height:2.25rem;border-radius:50%;background:var(--app-surface);display:grid;place-items:center;font-size:.875rem;font-weight:600}
+.msg{flex:1;min-width:0;display:flex;flex-direction:column}
+.msg span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm{font-size:.875rem;font-weight:600}
+.lm{font-size:.8125rem;color:var(--app-muted)}
+.time{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;font-size:.6875rem;color:var(--app-muted)}
+.unread{width:.4rem;height:.4rem;border-radius:50%;background:var(--app-accent)}
+.ph-card{display:flex;align-items:center;justify-content:space-between;gap:.75rem;background:var(--app-surface);border-radius:1.25rem;padding:1rem}
+.ph-strong{font-size:1rem;font-weight:700}
+.ph-sub{font-size:.75rem;color:var(--app-muted)}
+.switch{flex:none;width:2.6rem;height:1.5rem;border-radius:999px;background:var(--app-accent);display:flex;justify-content:flex-end;align-items:center;padding:.15rem}
+.switch i{width:1.2rem;height:1.2rem;border-radius:50%;background:#fff}
+.ph-pill{background:var(--app-accent);color:#fff;border-radius:999px;padding:.7rem;text-align:center;font-weight:600;font-size:.875rem}
+.ph-cap{font-size:.75rem;color:var(--app-muted);text-align:center}
+.ph-head{display:flex;justify-content:space-between;font-size:.875rem;font-weight:600}
+.ph-acc{color:var(--app-accent)}
+.ph-plain{font-size:.875rem}
+.ph-plain li{padding-block:.35rem}
+.ph-tabs{margin-top:auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));font-size:.5625rem;color:var(--app-muted)}
+.ph-tabs span{display:flex;flex-direction:column;align-items:center;gap:.25rem;white-space:nowrap}
+.ph-tabs span::before{content:"";width:.9rem;height:.9rem;border-radius:.25rem;background:rgba(245,245,247,.25)}
+.ph-tabs .on{color:var(--app-accent)}
+.ph-tabs .on::before{background:var(--app-accent)}
+
+/* ===== Header ===== */
+.site-head{position:sticky;top:0;z-index:50;background:var(--nav-bg);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px dashed var(--line)}
+.head-in{display:flex;justify-content:space-between;align-items:center;min-height:3.25rem}
+.logo{display:inline-flex;align-items:center;gap:.75rem;font-family:var(--serif);font-style:italic;font-size:1.125rem;letter-spacing:.04em}
+.mark{flex:none;width:.625rem;height:.625rem;border:1px solid currentColor;transform:rotate(45deg)}
+.nav{display:flex;gap:1.5rem;font-size:.8125rem}
+.nav a,.band-links a,.foot-links a{color:var(--ink-muted)}
+@media (max-width:479.98px){.nav-how{display:none}}
+@media (max-width:479.98px){.btn{padding:.9rem 1.4rem;font-size:.8125rem;letter-spacing:.1em}} /* keeps the App Store pill on one line on common phone widths */
+
+/* ===== Title band ===== */
+main>.band{padding-block:4rem 2rem}
+.band-grid{display:grid;gap:2rem}
+.band .eyebrow{margin-bottom:1.5rem}
+.tagline{font-weight:600;font-size:1.5rem;line-height:1.25;color:var(--ink);max-width:16ch}
+.band-links{display:flex;flex-direction:column;align-items:flex-start;margin-top:1rem;font-size:.875rem}
+.band-lead{margin-top:2.5rem;max-width:46ch;color:var(--ink-muted)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:2rem}
+@media (min-width:1024px){
+  main>.band{padding-block:6rem 2.5rem}
+  .band-grid{grid-template-columns:repeat(12,minmax(0,1fr));align-items:end}
+  .band-main{grid-column:1 / 9}
+  .band-side{grid-column:9 / 13;text-align:right}
+  .tagline{margin-left:auto}
+  .band-links{align-items:flex-end}
+}
+
+/* ===== Network tiles ===== */
+.tiles{display:flex;gap:clamp(0.75rem, 4vw, 3rem)}
+.tiles li{display:flex;flex-direction:column;align-items:center;gap:.75rem;min-width:0;font-size:.875rem;font-weight:600} /* min-width:0 keeps the row inside 320px */
+.tile{width:clamp(3.5rem, 14vw, 5.5rem);aspect-ratio:1;border-radius:1.25rem;background:var(--card);box-shadow:var(--shadow-card);display:grid;place-items:center}
+.tile svg{width:45%}
+.at{font-size:clamp(1.575rem, 6.3vw, 2.475rem);font-weight:500;line-height:1} /* 45% of the tile width */
+.tiles-note{margin-top:1.5rem}
+
+/* ===== Shelf: what stays, what goes ===== */
+.label+h3{margin-top:.5rem}
+.art{flex:1;display:flex;align-items:flex-end;justify-content:center;margin-top:2rem}
+.art.mid{align-items:center}
+.art .phone{margin-bottom:-9rem}
+.stories{display:flex;justify-content:center;align-items:center;gap:.75rem;width:100%} /* full width: circles are 3.75rem, shrinking only in the narrowest cards */
+.stories li{flex:0 1 3.75rem;aspect-ratio:1;border:2px solid var(--ink);border-radius:50%;padding:3px;display:grid}
+.stories span{display:grid;place-items:center;border-radius:50%;background:var(--canvas);font-weight:600}
+.profile{display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.pic{width:4.5rem;height:4.5rem;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:1.5rem;font-weight:600}
+.pname{font-weight:600}
+.profile i{height:.5rem;border-radius:999px;background:rgba(255,255,255,.14)}
+.goes{margin-top:1rem}
+.goes li{border-top:1px dashed var(--line);padding-block:1rem;font-family:var(--serif);font-size:1.5rem;color:var(--ink-muted);text-decoration:line-through}
+.x{display:inline-block;margin-right:.5em} /* inline-block: the line-through does not reach it */
+.shelf-note{max-width:60ch}
+
+/* ===== Statement ===== */
+main>.statement{padding-block:5rem}
+.statement-in{max-width:64rem}
+.statement .eyebrow{margin-bottom:2.5rem}
+.statement-text{font-family:var(--serif);font-size:clamp(1.75rem, 1.2rem + 2vw, 3rem);line-height:1.3}
+.closing{margin-top:2.5rem;font-family:var(--serif);font-style:italic;font-size:1.25rem;color:var(--ink-muted)}
+@media (min-width:1024px){main>.statement{padding-block:7rem}}
+
+/* ===== Shelf: how it works ===== */
+#how,#faq{scroll-margin-top:5rem}
+.how>li{min-height:22rem}
+.idx{font-family:var(--serif);font-size:5rem;line-height:1;color:var(--faint)}
+.how h3{margin-top:auto}
+.how h3+p{margin-top:.75rem;color:var(--muted)}
+@media (min-width:1024px){.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;margin-inline:0;padding-inline:0;overflow:visible}}
+
+/* ===== Wide cards ===== */
+.wide-h{font-size:clamp(2.25rem, 1.6rem + 2.4vw, 3.75rem)}
+.wide-body{margin-top:1.5rem;color:var(--muted)}
+.lock{padding:2.5rem 1.75rem 0}
+.lock-text{padding-bottom:2.5rem}
+.lock .eyebrow,.soon .eyebrow{margin-bottom:1.5rem}
+.lock .wide-body{max-width:40ch}
+.lock .phone{margin:0 auto -7rem}
+.soon{padding:4rem 1.75rem;text-align:center}
+.soon-in{max-width:40rem;margin-inline:auto}
+@media (min-width:1024px){
+  .lock{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));align-items:center;gap:3rem;padding:4.5rem 4.5rem 0}
+  .lock-text{grid-column:1 / 7;padding-bottom:4.5rem}
+  .lock .phone{grid-column:8 / 13}
+  .soon{padding:6rem 4.5rem}
+}
+
+/* ===== Questions ===== */
+.faq{padding:.5rem 1.75rem}
+.faq details+details{border-top:1px dashed var(--line)}
+.faq summary{display:flex;justify-content:space-between;align-items:center;gap:2rem;padding-block:1.5rem;cursor:pointer;list-style:none;font-size:1.125rem;font-weight:600}
+.faq summary::-webkit-details-marker{display:none}
+.plus{font-size:1.5rem;line-height:1;transition:transform 450ms var(--ease)}
+.faq details[open]:not(.closing) .plus{transform:rotate(45deg)}
+.ans{overflow:hidden}
+.ans p{padding-bottom:1.75rem;max-width:60ch;color:var(--ink-muted)}
+@media (min-width:1024px){.faq{padding:.5rem 2.5rem}.faq summary{font-size:1.25rem}}
+
+/* ===== Footer ===== */
+.site-foot{margin-top:3rem;padding-block:4rem 2.5rem;border-top:1px dashed var(--line)}
+.foot-grid{display:grid;gap:3rem}
+.foot-tag{margin-top:1rem;font-family:var(--serif);font-style:italic;font-size:1.25rem;color:var(--ink-muted)}
+.foot-links ul{display:grid;gap:.5rem;margin-top:1rem}
+.foot-links a{font-size:.9375rem}
+.giant{overflow:hidden;margin-top:4rem;text-align:center;font-family:var(--sans);font-size:18vw;font-weight:900;line-height:.8;letter-spacing:-0.04em;color:var(--ink);opacity:.06}
+.legal{margin-top:2.5rem;border-top:1px dashed var(--line);padding-top:1.5rem;font-size:.8125rem;color:var(--ink-muted);max-width:70ch}
+@media (min-width:1024px){
+  .foot-grid{grid-template-columns:repeat(12,minmax(0,1fr))}
+  .foot-brand{grid-column:1 / 7}
+  .foot-explore{grid-column:7 / 10}
+  .foot-help{grid-column:10 / 13}
+}
+
+/* ===== Hover: fine pointers only ===== */
+@media (hover:hover) and (pointer:fine){
+  .card:hover{scale:1.01}
+  .btn:hover .arr{transform:translateX(.4rem)}
+  .ghost:hover{background:var(--on-inverse);color:var(--surface-inverse)}
+  .nav a:hover,.band-links a:hover,.foot-links a:hover{color:var(--ink)}
+}
+
+/* ===== Motion: starting states exist only under .js; the script adds .in ===== */
+.ln{display:block}
+.js .fu,.js .fd,.js .pl{transition:opacity var(--t) var(--ease) var(--d,0ms),transform var(--t) var(--ease) var(--d,0ms),scale .4s var(--ease)}
+.js .fu{--t:720ms}
+.js .fd{--t:640ms}
+.js .pl{--t:700ms}
+.js .fu:not(.in){opacity:0;transform:translateY(2.5rem)}
+.js .fd:not(.in){opacity:0}
+.js .pl:not(.in){opacity:0;transform:translateY(3.5rem) scale(1.04)}
+.js .ln{overflow:hidden;padding:0 .06em .12em;margin:0 -.06em -.12em} /* room for italic overhang and descenders */
+.js .ln>span{display:block;transition:transform 1000ms var(--ease) var(--d,0ms)}
+.js .lines:not(.in) .ln>span{transform:translateY(110%)}
+.js .w{display:inline-block;transition:opacity 720ms cubic-bezier(.165,.84,.44,1),transform 720ms cubic-bezier(.165,.84,.44,1)}
+.js .words:not(.in) .w{opacity:0;transform:translateY(.8rem)}
+
+/* ===== Reduced motion: no transitions, no motion transforms, everything shown ===== */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important}
+  .js .fu,.js .fd,.js .pl,.js .w,.js .ln>span{opacity:1!important;transform:none!important}
+  .card{scale:none!important}
+  .arr{transform:none!important}
+}
+</style>
 </head>
 <body>
-<header class="site-header">
-  <div class="wrap header-inner">
-    <a href="index.html" class="logo">onli<span class="accent-text">DM</span></a>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="#how">How it works</a>
+
+<!-- ===== Header ===== -->
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true"></span>onliDM</a>
+    <nav class="nav" aria-label="Primary">
+      <a class="nav-how" href="#how">How it works</a>
       <a href="#faq">FAQ</a>
       <a href="support.html">Support</a>
     </nav>
@@ -30,180 +288,334 @@
 
 <main>
 
-<section class="section hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow">For iPhone &middot; iOS 17+</p>
-      <h1>Your DMs.<br>Nothing else.</h1>
-      <p class="sub">onliDM opens Instagram, Messenger, X and LinkedIn straight to your messages. Feed, Reels and Explore are blocked. Stories keep only the stories row.</p>
-      <div class="cta-row">
-        <!-- App not live yet. When it is, make this div an <a class="store-badge" href="APP-STORE-URL"> and change the first line to "Download on the". -->
-        <div class="store-badge">
-          <span class="store-badge-sub">Coming soon to the</span>
-          <span class="store-badge-main">App Store</span>
+  <!-- ===== Title band ===== -->
+  <section class="band" id="top">
+    <div class="wrap">
+      <div class="band-grid">
+        <div class="band-main">
+          <p class="eyebrow rv fd">For iPhone · iOS 17+</p>
+          <h1 class="rv lines">
+            <span class="ln"><span>Your DMs.</span></span>
+            <span class="ln" style="--d:140ms"><span><span class="accent">Nothing</span> else.</span></span>
+          </h1>
         </div>
-        <p class="cta-note">Free in v1 &middot; iPhone only</p>
+        <div class="band-side rv fu" style="--d:200ms">
+          <p class="tagline">A focused browser for your DM inbox.</p>
+          <p class="band-links">
+            <a href="#how">How it works <span aria-hidden="true">↗</span></a>
+            <a href="support.html">Support <span aria-hidden="true">↗</span></a>
+          </p>
+        </div>
+      </div>
+      <p class="lead band-lead rv words" data-delay="500" data-stagger="18">onliDM opens Instagram, Messenger, X and LinkedIn straight to your messages. Feed, Reels and Explore are blocked. Stories keep only the stories row.</p>
+      <div class="actions rv fu" style="--d:800ms">
+        <p class="btn solid">Coming soon to the App&nbsp;Store</p>
+        <p class="note">Free in v1 · iPhone only</p>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="phone" aria-hidden="true">
-        <div class="phone-screen">
-          <div class="phone-statusbar">
-            <span>9:41</span>
-            <span>&#9679;&#9679;&#9679;</span>
+  </section>
+
+  <!-- ===== Network tiles ===== -->
+  <section>
+    <div class="wrap">
+      <h2 class="tt rv fu"><span>Pick your apps.</span> <span>Turn on the services you use.</span></h2>
+      <ul class="tiles">
+        <li class="rv fu">
+          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></span>
+          Instagram
+        </li>
+        <li class="rv fu" style="--d:80ms">
+          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H9l-3 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M18 10h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v2.5L16.5 17H13"/></svg></span>
+          Messenger
+        </li>
+        <li class="rv fu" style="--d:160ms">
+          <span class="tile"><span class="at" aria-hidden="true">@</span></span>
+          X
+        </li>
+        <li class="rv fu" style="--d:240ms">
+          <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="11" rx="2"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg></span>
+          LinkedIn
+        </li>
+      </ul>
+      <p class="note tiles-note rv fd">Switch between them from the onliDM tab at the bottom right.</p>
+    </div>
+  </section>
+
+  <!-- ===== Shelf: what stays, what goes ===== -->
+  <section>
+    <div class="wrap">
+      <div class="shelf-head">
+        <h2 class="tt rv fu"><span>What stays.</span> <span>What goes.</span></h2>
+        <div class="shelf-btns">
+          <button type="button" aria-label="Previous">‹</button>
+          <button type="button" aria-label="Next">›</button>
+        </div>
+      </div>
+      <ul class="shelf" tabindex="0" aria-label="What stays and what goes">
+        <li class="card dark rv pl">
+          <p class="label">What stays</p>
+          <h3>Direct messages</h3>
+          <div class="art">
+            <!-- Phone A: the inbox -->
+            <div class="phone rv pl" role="img" aria-label="onliDM showing an Instagram inbox">
+              <div class="ph" aria-hidden="true">
+                <div class="ph-status"><span>9:41</span><span class="dots"><i></i><i></i><i></i></span></div>
+                <p class="ph-title">Instagram</p>
+                <ul class="ph-list">
+                  <li><span class="av">M</span><span class="msg"><span class="nm">Maya</span><span class="lm">see you at 7?</span></span><span class="time">2m<i class="unread"></i></span></li>
+                  <li><span class="av">L</span><span class="msg"><span class="nm">Leo</span><span class="lm">sent the file over</span></span><span class="time">14m</span></li>
+                  <li><span class="av">S</span><span class="msg"><span class="nm">Sophie</span><span class="lm">that is hilarious</span></span><span class="time">1h</span></li>
+                  <li><span class="av">T</span><span class="msg"><span class="nm">Theo</span><span class="lm">call me when free</span></span><span class="time">3h</span></li>
+                </ul>
+                <div class="ph-tabs"><span class="on">Messages</span><span>Stories</span><span>Notifications</span><span>Profile</span><span>onliDM</span></div>
+              </div>
+            </div>
           </div>
-          <div class="phone-title">Instagram</div>
-          <ul class="chat-list">
-            <li class="chat-item">
-              <span class="avatar" style="--hue:205">M</span>
-              <span class="chat-text">
-                <span class="chat-name">Maya</span>
-                <span class="chat-snippet">see you at 7?</span>
-              </span>
-              <span class="chat-meta">
-                <span class="chat-time">2m</span>
-                <span class="unread-dot"></span>
-              </span>
-            </li>
-            <li class="chat-item">
-              <span class="avatar" style="--hue:265">L</span>
-              <span class="chat-text">
-                <span class="chat-name">Leo</span>
-                <span class="chat-snippet">sent the file over</span>
-              </span>
-              <span class="chat-meta">
-                <span class="chat-time">14m</span>
-              </span>
-            </li>
-            <li class="chat-item">
-              <span class="avatar" style="--hue:155">S</span>
-              <span class="chat-text">
-                <span class="chat-name">Sophie</span>
-                <span class="chat-snippet">that is hilarious</span>
-              </span>
-              <span class="chat-meta">
-                <span class="chat-time">1h</span>
-              </span>
-            </li>
-            <li class="chat-item">
-              <span class="avatar" style="--hue:25">T</span>
-              <span class="chat-text">
-                <span class="chat-name">Theo</span>
-                <span class="chat-snippet">call me when free</span>
-              </span>
-              <span class="chat-meta">
-                <span class="chat-time">3h</span>
-              </span>
-            </li>
+        </li>
+        <li class="card rv pl" style="--d:90ms">
+          <p class="label">What stays</p>
+          <h3>Stories on Instagram and Messenger</h3>
+          <div class="art mid">
+            <ul class="stories" aria-hidden="true"><li><span>M</span></li><li><span>L</span></li><li><span>S</span></li><li><span>T</span></li></ul>
+          </div>
+        </li>
+        <li class="card dark rv pl" style="--d:180ms">
+          <p class="label">What stays</p>
+          <h3>Profiles</h3>
+          <div class="art mid">
+            <div class="profile" aria-hidden="true">
+              <span class="pic">M</span>
+              <span class="pname">Maya</span>
+              <i style="width:9rem"></i><i style="width:7rem"></i><i style="width:5rem"></i>
+            </div>
+          </div>
+        </li>
+        <li class="card rv pl" style="--d:270ms">
+          <p class="label">What goes</p>
+          <ul class="goes">
+            <li><span class="x" aria-hidden="true">×</span>Feed</li>
+            <li><span class="x" aria-hidden="true">×</span>Reels</li>
+            <li><span class="x" aria-hidden="true">×</span>Explore</li>
+            <li><span class="x" aria-hidden="true">×</span>Suggested posts</li>
           </ul>
-          <div class="phone-tabbar">
-            <span class="tab-item active"><i class="tab-dot"></i>Messages</span>
-            <span class="tab-item"><i class="tab-dot"></i>Stories</span>
-            <span class="tab-item"><i class="tab-dot"></i>Notifications</span>
-            <span class="tab-item"><i class="tab-dot"></i>Profile</span>
-            <span class="tab-item"><i class="tab-dot"></i>onliDM</span>
+        </li>
+      </ul>
+      <p class="note shelf-note rv fd">Feed, Reels and Explore pages are blocked by URL rules. Stories keep only the stories row.</p>
+    </div>
+  </section>
+
+  <!-- ===== Statement ===== -->
+  <section class="statement">
+    <div class="wrap">
+      <div class="statement-in">
+        <p class="eyebrow rv fd">The idea</p>
+        <p class="statement-text rv words" data-stagger="30">onliDM is a focused browser for the direct-message inbox you already use. Feed, Reels, Explore, and other endless-scroll surfaces are blocked by onliDM's own URL rules, and the Stories tab clips the home page down to its stories row, so what is left is your conversations, stories and profiles.</p>
+        <p class="closing">No accounts, no servers, nothing tracked.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Shelf: how it works ===== -->
+  <section id="how">
+    <div class="wrap">
+      <h2 class="tt rv fu"><span>How it works.</span></h2>
+      <ul class="shelf how" tabindex="0" aria-label="How it works">
+        <li class="card rv fu">
+          <p class="idx">01</p>
+          <h3>Pick your apps</h3>
+          <p>Choose your services in the onliDM tab at the bottom right.</p>
+        </li>
+        <li class="card dark rv fu" style="--d:90ms">
+          <p class="idx">02</p>
+          <h3>Log in inside onliDM</h3>
+          <p>Sign in like you normally would. Your session stays on your phone.</p>
+        </li>
+        <li class="card rv fu" style="--d:180ms">
+          <p class="idx">03</p>
+          <h3>The feed is gone</h3>
+          <p>Feed, Reels and Explore are blocked. DMs, stories and profiles still work.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Wide card: the lock ===== -->
+  <section>
+    <div class="wrap">
+      <div class="card dark lock rv fu">
+        <div class="lock-text">
+          <p class="eyebrow rv fd">Screen Time lock</p>
+          <h2 class="wide-h rv lines"><span class="ln"><span>Lock the real apps.</span></span></h2>
+          <p class="lead wide-body rv words" data-stagger="16">Shield Instagram and friends with Screen Time so only onliDM stays open. Each day gives you two 5-minute passes.</p>
+          <a class="btn ghost" href="support.html">How the lock works <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+        <!-- Phone B: the lock -->
+        <div class="phone rv pl" role="img" aria-label="onliDM lock screen with the lock switched on">
+          <div class="ph" aria-hidden="true">
+            <div class="ph-status"><span>9:41</span><span class="dots"><i></i><i></i><i></i></span></div>
+            <p class="ph-title ph-center">Lock</p>
+            <div class="ph-card">
+              <div><p class="ph-strong">Lock apps</p><p class="ph-sub">On. The apps you picked are locked.</p></div>
+              <span class="switch"><i></i></span>
+            </div>
+            <p class="ph-pill">Unlock for 5 minutes</p>
+            <p class="ph-cap">2 of 2 passes left today</p>
+            <div class="ph-head"><span>Locked apps</span><span class="ph-acc">Change apps</span></div>
+            <ul class="ph-plain"><li>Instagram</li><li>X</li></ul>
+            <div class="ph-tabs"><span>Messages</span><span>Stories</span><span>Notifications</span><span>Profile</span><span class="on">onliDM</span></div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section stays-goes">
-  <div class="wrap split-grid">
-    <div class="col">
-      <h2>What stays</h2>
-      <ul class="list-good">
-        <li>Direct messages</li>
-        <li>Stories on Instagram and Messenger</li>
-        <li>Profiles</li>
-      </ul>
-    </div>
-    <div class="col">
-      <h2>What goes</h2>
-      <ul class="list-bad">
-        <li>Feed</li>
-        <li>Reels</li>
-        <li>Explore</li>
-        <li>Suggested posts</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="section apps" id="apps">
-  <div class="wrap">
-    <h2>Pick your apps</h2>
-    <p class="section-sub">Turn on the services you use. Switch between them from the onliDM tab at the bottom right.</p>
-    <div class="chip-row">
-      <span class="chip">Instagram</span>
-      <span class="chip">Messenger</span>
-      <span class="chip">X</span>
-      <span class="chip">LinkedIn</span>
-    </div>
-  </div>
-</section>
-
-<section class="section how" id="how">
-  <div class="wrap">
-    <h2>How it works</h2>
-    <div class="steps-grid">
-      <div class="step">
-        <span class="step-num">1</span>
-        <h3>Pick your apps</h3>
-        <p>Choose your services in the onliDM tab at the bottom right.</p>
-      </div>
-      <div class="step">
-        <span class="step-num">2</span>
-        <h3>Log in inside onliDM</h3>
-        <p>Sign in like you normally would. Your session stays on your phone.</p>
-      </div>
-      <div class="step">
-        <span class="step-num">3</span>
-        <h3>The feed is gone</h3>
-        <p>Feed, Reels and Explore are blocked. DMs, stories and profiles still work.</p>
+  <!-- ===== Questions ===== -->
+  <section id="faq">
+    <div class="wrap">
+      <h2 class="tt rv fu"><span>Questions</span></h2>
+      <div class="card faq">
+        <details>
+          <summary><span>Is my login safe?</span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="ans"><p>Your login stays in your iPhone's WebKit storage, the same system Safari uses. onliDM has no servers, no accounts and no analytics, so there is nowhere for it to go.</p></div>
+        </details>
+        <details>
+          <summary><span>Is this official?</span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="ans"><p>No. onliDM is an independent app and is not affiliated with, endorsed by, or sponsored by Meta, X Corp or LinkedIn. It opens their own websites inside a focused viewer.</p></div>
+        </details>
+        <details>
+          <summary><span>What if a service changes its site?</span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="ans"><p>onliDM blocks pages like the feed or Explore using URL rules. If a service changes its site, those rules may need an update before blocking works again.</p></div>
+        </details>
+        <details>
+          <summary><span>How do I sign out?</span><span class="plus" aria-hidden="true">+</span></summary>
+          <div class="ans"><p>Open the onliDM tab at the bottom right and tap "Sign out of all apps." That clears every login in one step.</p></div>
+        </details>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section faq" id="faq">
-  <div class="wrap wrap-narrow">
-    <h2>Questions</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>Is my login safe?</summary>
-        <p>Your login stays in your iPhone's WebKit storage, the same system Safari uses. onliDM has no servers, no accounts and no analytics, so there is nowhere for it to go.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Is this official?</summary>
-        <p>No. onliDM is an independent app and is not affiliated with, endorsed by, or sponsored by Meta, X Corp or LinkedIn. It opens their own websites inside a focused viewer.</p>
-      </details>
-      <details class="faq-item">
-        <summary>What if a service changes its site?</summary>
-        <p>onliDM blocks pages like the feed or Explore using URL rules. If a service changes its site, those rules may need an update before blocking works again.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How do I sign out?</summary>
-        <p>Open the onliDM tab at the bottom right and tap "Sign out of all apps." That clears every login in one step.</p>
-      </details>
+  <!-- ===== Wide card: coming soon ===== -->
+  <section>
+    <div class="wrap">
+      <!-- APP STORE: when the app is live, replace this heading and button with the App Store link, and turn the title-band pill into the same link. -->
+      <div class="card dark soon rv fu">
+        <div class="soon-in">
+          <p class="eyebrow rv fd">Download</p>
+          <h2 class="wide-h rv lines"><span class="ln"><span>Coming soon to the App&nbsp;Store.</span></span></h2>
+          <p class="lead wide-body rv words" data-stagger="16">onliDM is free, with no in-app purchases, built for iPhone running iOS 17 or later.</p>
+          <a class="btn ghost" href="support.html">Support <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
 </main>
 
-<footer class="site-footer">
-  <div class="wrap footer-inner">
-    <p class="footer-brand">onliDM</p>
-    <nav class="footer-links" aria-label="Footer">
-      <a href="privacy.html">Privacy</a>
-      <a href="support.html">Support</a>
-    </nav>
-  </div>
+<!-- ===== Footer ===== -->
+<footer class="site-foot">
   <div class="wrap">
-    <p class="disclaimer">onliDM is not affiliated with, endorsed by, or sponsored by Meta, X Corp or LinkedIn. Instagram and Messenger are trademarks of Meta Platforms, Inc. X is a trademark of X Corp. LinkedIn is a trademark of LinkedIn Corporation.</p>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#top"><span class="mark" aria-hidden="true"></span>onliDM</a>
+        <p class="foot-tag">Your DMs. Nothing else.</p>
+      </div>
+      <div class="foot-links foot-explore">
+        <p class="label">Explore</p>
+        <ul><li><a href="#how">How it works</a></li><li><a href="#faq">FAQ</a></li></ul>
+      </div>
+      <div class="foot-links foot-help">
+        <p class="label">Help</p>
+        <ul><li><a href="support.html">Support</a></li><li><a href="privacy.html">Privacy</a></li></ul>
+      </div>
+    </div>
+    <div class="giant" aria-hidden="true">onliDM</div>
+    <p class="legal">onliDM is not affiliated with, endorsed by, or sponsored by Meta, X Corp or LinkedIn. Instagram and Messenger are trademarks of Meta Platforms, Inc. X is a trademark of X Corp. LinkedIn is a trademark of LinkedIn Corporation.</p>
   </div>
 </footer>
+
+<script>
+document.documentElement.classList.add('js'); // first statement: every hidden starting state is scoped under .js
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Word reveal: wrap each word in a span, keep the spaces as text
+if (!reduce) document.querySelectorAll('.words').forEach(function (p) {
+  var delay = Number(p.dataset.delay || 0), step = Number(p.dataset.stagger);
+  var words = p.textContent.trim().split(/\s+/);
+  p.textContent = '';
+  words.forEach(function (word, i) {
+    if (i) p.append(' ');
+    var s = document.createElement('span');
+    s.className = 'w';
+    s.textContent = word;
+    s.style.transitionDelay = delay + i * step + 'ms';
+    p.append(s);
+  });
+});
+
+// Reveal: add .in once, when a block first enters the viewport
+var blocks = document.querySelectorAll('.rv');
+if (reduce || !('IntersectionObserver' in window)) {
+  blocks.forEach(function (el) { el.classList.add('in'); });
+} else {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+  blocks.forEach(function (el) { io.observe(el); });
+}
+
+// Shelf buttons: scroll by one card plus the gap; each is disabled at its end
+document.querySelectorAll('.shelf-btns').forEach(function (btns) {
+  var shelf = btns.parentElement.nextElementSibling;
+  var prev = btns.children[0], next = btns.children[1];
+  function update() {
+    prev.disabled = shelf.scrollLeft <= 1;
+    next.disabled = shelf.scrollLeft >= shelf.scrollWidth - shelf.clientWidth - 1;
+  }
+  function go(dir) {
+    var step = shelf.firstElementChild.offsetWidth + parseFloat(getComputedStyle(shelf).columnGap);
+    shelf.scrollBy({ left: dir * step, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  prev.addEventListener('click', function () { go(-1); });
+  next.addEventListener('click', function () { go(1); });
+  shelf.addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  update();
+});
+
+// A shelf is a Tab stop only while it can scroll sideways
+function shelfStops() {
+  document.querySelectorAll('.shelf').forEach(function (s) {
+    if (s.scrollWidth > s.clientWidth + 1) s.setAttribute('tabindex', '0'); else s.removeAttribute('tabindex');
+  });
+}
+addEventListener('resize', shelfStops);
+shelfStops();
+
+// FAQ: animate the answer's height and opacity; without JS the native <details> toggle still works
+document.querySelectorAll('.faq details').forEach(function (d) {
+  var ans = d.querySelector('.ans'), anim = null;
+  d.querySelector('summary').addEventListener('click', function (e) {
+    if (reduce) return; // native, instant toggle
+    e.preventDefault(); // Enter and Space on a summary also arrive here as a click
+    var opening = !d.open || d.classList.contains('closing');
+    var from = d.open ? ans.offsetHeight : 0;
+    var fade = d.open ? getComputedStyle(ans).opacity : 0;
+    if (anim) anim.cancel();
+    d.classList.toggle('closing', !opening);
+    d.open = true;
+    anim = ans.animate(
+      [{ height: from + 'px', opacity: fade }, { height: (opening ? ans.scrollHeight : 0) + 'px', opacity: opening ? 1 : 0 }],
+      { duration: 550, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }
+    );
+    anim.onfinish = function () {
+      if (!opening) { d.open = false; d.classList.remove('closing'); }
+      anim.cancel();
+      anim = null;
+    };
+  });
+});
+</script>
 </body>
 </html>

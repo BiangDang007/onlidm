@@ -1,20 +1,21 @@
 /* ==========================================================================
    onliDM marketing site
-   Dark, mobile-first, system fonts only, zero external requests.
+   Light theme since 2026-10-03 (matches index.html), mobile-first, system fonts only, zero external requests.
+   Since that date this file styles privacy.html, support.html and 404.html only; index.html carries its own styles.
    ========================================================================== */
 
 :root {
-  --bg: #0A0A0C;
-  --surface: #141418;
-  --text: #F5F5F7;
-  --muted: #9A9AA3;
-  --accent: #4F8CFF;
-  --border: rgba(245, 245, 247, 0.08);
-  --border-strong: rgba(245, 245, 247, 0.14);
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --text: #191917;
+  --muted: rgba(25, 25, 23, 0.62);
+  --accent: #191917;
+  --border: rgba(25, 25, 23, 0.2);
+  --border-strong: rgba(25, 25, 23, 0.3);
   --radius-lg: 24px;
   --radius-md: 14px;
   --radius-pill: 999px;
-  --shadow-soft: 0 30px 60px -20px rgba(0, 0, 0, 0.65);
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.06);
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --wrap: 1100px;
 }
@@ -488,3 +489,29 @@ a.store-badge:hover {
   html { scroll-behavior: auto; }
   * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
 }
+
+/* ---------- 2026-10-03: match the new landing page (logo, serif headings, dashed rules) ---------- */
+:root { --font-serif: ui-serif, "New York", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+.site-header { border-bottom: 1px dashed var(--border); }
+.site-footer { border-top: 1px dashed var(--border); }
+.logo {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.125rem;
+  letter-spacing: 0.04em;
+}
+.logo::before {
+  content: "";
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-right: 0.75rem;
+  border: 1px solid currentColor;
+  transform: rotate(45deg);
+  vertical-align: 0.05em;
+}
+.legal h1, .legal h2 { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.01em; }
+.legal h2 { font-size: 1.5rem; }
+.legal a { text-decoration: underline; text-underline-offset: 0.18em; }
